@@ -1,21 +1,37 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+// import FormView from '@/views/FormView.vue';
+// import TrelloView from '@/views/TrelloView.vue';
+// import ESigatureView from '@/views/ESignatureView.vue';
+// import PresignedURL from '@/views/PresignedURL.vue';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView
+      path: '/form-by-Jade',
+      name: 'JForm',
+      component: () => import('@/views/JFormView.vue')
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+      path: '/form-by-Chiahsuan',
+      name: 'CForm',
+      component: () => import('@/views/CFormView.vue')
+    },
+    {
+      path: '/trello-mockup',
+      name: 'Trello-Mockup',
+      component: () => import('@/views/TrelloView.vue')
+    },
+    {
+      path: '/e-signature',
+      name: 'E-Signature',
+      component: () => import('@/views/ESignatureView.vue')
+    },
+    {
+      path: '/presigned-url',
+      name: 'Presigned-URL',
+      component: () => import('@/views/PresignedURLView.vue')
     }
   ]
 })
