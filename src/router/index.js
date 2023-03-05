@@ -1,9 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
-// import FormView from '@/views/FormView.vue';
-// import TrelloView from '@/views/TrelloView.vue';
-// import ESigatureView from '@/views/ESignatureView.vue';
-// import PresignedURL from '@/views/PresignedURL.vue';
-
+import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +29,6 @@ const router = createRouter({
       component: () => import('@/views/PresignedURLView.vue')
     }
   ]
-})
+});
 
-export default router
+export default router;
