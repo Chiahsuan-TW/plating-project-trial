@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 
 const API = axios.create({
   baseURL: import.meta.env.VITE_APP_FRONTEND_HOST,
+  // baseURL: `http://192.168.1.78:8080/${import.meta.env.VITE_APP_FRONTEND_HOST}`,
   headers: {
     'Content-Type': 'application/json',
     accept: 'application/json'
@@ -48,5 +49,20 @@ export default {
   async DELETE(path, params) {
     const response = await API.delete(path, params);
     return response;
+  },
+  async UploadImg(file) {
+    const {
+      data: { data: res }
+    } = await this.POST('/share/upload-image-presignedURL', {
+      filename: file.name
+    });
+
+    const presignedURL = res.presignedURL;
+
+    await axios.put(presignedURL, file, {
+      headers: {
+        'Content-Type': 'image'
+      }
+    });
   }
 };
