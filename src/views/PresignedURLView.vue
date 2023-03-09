@@ -7,6 +7,7 @@ export default {
 <script setup>
 import { reactive, ref } from 'vue';
 import API from '@/utils/API.js';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import Cookies from 'js-cookie';
@@ -80,8 +81,31 @@ const handleChange = async info => {
   } = await API.POST('/share/get-presignedURL', { filename });
 
   console.log('res', res);
-  fileName.value = res.filename;
-  fileImgUrl.value = res.presignedURL;
+
+  // 把 presigned-url 網址加入 fileList
+  fileList.value.forEach((eachFile, index, array) => {
+    if (eachFile.name === filename) {
+      array[index].imageUrl = res.presignedURL;
+    }
+  });
+
+  /**
+   *  getUploadUrlAndPhotoUrl: {
+   *      'upload_url': string;
+   *      'get_url': string;
+   *  }
+   */
+  // const { data: getUploadUrlAndPhotoUrl } = await axios.post(
+  //   'https://grndbc9554.execute-api.us-east-1.amazonaws.com/dev/jade-upload-s3',
+  //   {
+  //     fileName: filename,
+  //     fileType: 'image/jpeg'
+  //   }
+  // );
+
+  // await axios.put(getUploadUrlAndPhotoUrl['upload_url'], file);
+
+  // fileImgUrl.value = getUploadUrlAndPhotoUrl['get_url'];
 };
 
 function beforeUpload(file) {
@@ -130,8 +154,12 @@ function beforeUpload(file) {
         take picture
       </a-button>
     </a-upload>
-    <div class="mx-auto">
-      <img class="w-100" :src="fileImgUrl" :alt="fileName" />
+    <div class="mx-auto flex flex-row">
+      <template v-for="item in fileList">
+        <div>
+          <img class="w-100" :src="item.imageUrl" />
+        </div>
+      </template>
     </div>
   </section>
 </template>
