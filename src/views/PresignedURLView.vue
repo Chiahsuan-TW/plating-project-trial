@@ -64,13 +64,13 @@ const fileList = ref([]);
 
 /**
  * handleChange 將圖片上傳 S3
- * @param info:object: { 
+ * @param info:object: {
  *    file: object: {
  *      lastModified: number,
- *      name: string, 
- *      size: number, 
- *      type: string, 
- *      uid: string, 
+ *      name: string,
+ *      size: number,
+ *      type: string,
+ *      uid: string,
  *      webkitRelativePath: string
       },
      fileList: object[]
@@ -93,7 +93,7 @@ const handleChange = async info => {
 
     console.log('res', finalResponse);
 
-    // 把 presigned-url 網址加入 fileList
+    // put presigned-url add to fileList
     fileList.value.forEach((eachFile, index, array) => {
       if (eachFile.name === filename) {
         array[index].imageUrl = finalResponse.presignedURL;
@@ -159,23 +159,18 @@ function beforeUpload(file) {
     <section>
       <a-upload
         v-model:file-list="fileList"
+        class="upload-list-inline"
         name="file"
+        list-type="picture"
+        capture
         :beforeUpload="beforeUpload"
         @change="handleChange"
-        capture
       >
         <a-button>
           <upload-outlined></upload-outlined>
-          take picture
+          upload
         </a-button>
       </a-upload>
-      <div class="mx-auto flex flex-row">
-        <template v-for="item in fileList">
-          <div>
-            <img class="w-100" :src="item.imageUrl" />
-          </div>
-        </template>
-      </div>
     </section>
   </section>
 </template>
