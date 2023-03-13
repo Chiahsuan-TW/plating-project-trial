@@ -7,7 +7,6 @@ export default {
 <script setup>
 import { reactive, ref } from 'vue';
 import API from '@/utils/API.js';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import Cookies from 'js-cookie';
@@ -62,32 +61,47 @@ const onFinish = () => {
 };
 
 const fileList = ref([]);
-let fileName = ref('');
-let fileImgUrl = ref('');
 
 /**
  * handleChange 將圖片上傳 S3
- * @param info:object
+ * @param info:object: { 
+ *    file: object: {
+ *      lastModified: number,
+ *      name: string, 
+ *      size: number, 
+ *      type: string, 
+ *      uid: string, 
+ *      webkitRelativePath: string
+      },
+     fileList: object[]
+  }
  * @returns: void
  */
 
 const handleChange = async info => {
   const filename = info.file.name;
+  /**
+   * res: object: { filename: string, presignedURL: string }
+   */
 
-  await API.UploadImg(info.file);
+  try {
+    await API.UploadImg('photo', info.file);
 
-  const {
-    data: { data: res }
-  } = await API.POST('/share/get-presignedURL', { filename });
+    const {
+      data: { data: finalResponse }
+    } = await API.POST('/share/get-presignedURL', { filename });
 
-  console.log('res', res);
+    console.log('res', finalResponse);
 
-  // 把 presigned-url 網址加入 fileList
-  fileList.value.forEach((eachFile, index, array) => {
-    if (eachFile.name === filename) {
-      array[index].imageUrl = res.presignedURL;
-    }
-  });
+    // 把 presigned-url 網址加入 fileList
+    fileList.value.forEach((eachFile, index, array) => {
+      if (eachFile.name === filename) {
+        array[index].imageUrl = finalResponse.presignedURL;
+      }
+    });
+  } catch (error) {
+    console.log('error', error.message);
+  }
 
   /**
    *  getUploadUrlAndPhotoUrl: {
@@ -141,27 +155,29 @@ function beforeUpload(file) {
       </AFormItem>
     </AForm>
   </section>
-  <section class="w-1/2 mx-auto">
-    <a-upload
-      v-model:file-list="fileList"
-      name="file"
-      :beforeUpload="beforeUpload"
-      @change="handleChange"
-      capture
-    >
-      <a-button>
-        <upload-outlined></upload-outlined>
-        take picture
-      </a-button>
-    </a-upload>
-    <div class="mx-auto flex flex-row">
-      <template v-for="item in fileList">
-        <div>
-          <img class="w-100" :src="item.imageUrl" />
-        </div>
-      </template>
-    </div>
+  <section class="flex flex-row justify-around">
+    <section>
+      <a-upload
+        v-model:file-list="fileList"
+        name="file"
+        :beforeUpload="beforeUpload"
+        @change="handleChange"
+        capture
+      >
+        <a-button>
+          <upload-outlined></upload-outlined>
+          take picture
+        </a-button>
+      </a-upload>
+      <div class="mx-auto flex flex-row">
+        <template v-for="item in fileList">
+          <div>
+            <img class="w-100" :src="item.imageUrl" />
+          </div>
+        </template>
+      </div>
+    </section>
   </section>
 </template>
 
-<style></style>
+<style scoped></style>
