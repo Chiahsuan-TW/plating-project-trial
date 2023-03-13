@@ -1,7 +1,13 @@
-<template>
-  <div class="about">
-    <h1>This is an Form page -Chiahsuan</h1>
-  </div>
-</template>
+<script>
+export default {
+  name: 'CFormView'
+};
+</script>
 
-<style></style>
+<script setup>
+import { ReservationForm } from '@/components/reservation';
+</script>
+
+<template>
+  <ReservationForm />
+</template>
