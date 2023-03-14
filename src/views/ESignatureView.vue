@@ -36,7 +36,7 @@ async function save() {
       console.log('error', error.message);
     }
   } else {
-    alert('請簽名！');
+    return;
   }
 }
 

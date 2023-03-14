@@ -81,7 +81,7 @@ const fileList = ref([]);
 const handleChange = async info => {
   const filename = info.file.name;
   /**
-   * res: object: { filename: string, presignedURL: string }
+   * finalResponse: object: { filename: string, presignedURL: string }
    */
 
   try {
@@ -91,12 +91,11 @@ const handleChange = async info => {
       data: { data: finalResponse }
     } = await API.POST('/share/get-presignedURL', { filename });
 
-    console.log('res', finalResponse);
-
     // put presigned-url add to fileList
+    // add backend return file name.
     fileList.value.forEach((eachFile, index, array) => {
       if (eachFile.name === filename) {
-        array[index].imageUrl = finalResponse.presignedURL;
+        // array[index].filename = finalResponse.filename
       }
     });
   } catch (error) {
