@@ -15,9 +15,7 @@ const selectedKeys = ref(['1']);
         :style="{ lineHeight: '64px' }"
       >
         <ASubMenu key="1">
-          <template #icon>
-            <SettingOutlined />
-          </template>
+          <template #icon> </template>
           <template #title>Form</template>
           <RouterLink to="/form-by-Jade"
             ><AMenuItem key="setting:1">Form by Jade</AMenuItem></RouterLink
