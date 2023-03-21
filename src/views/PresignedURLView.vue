@@ -12,6 +12,7 @@ import duration from 'dayjs/plugin/duration';
 import Cookies from 'js-cookie';
 import { Form } from 'ant-design-vue';
 import Uploader from '@/components/Uploader.vue';
+import Select from '@/components/Select.vue';
 
 dayjs.extend(duration);
 
@@ -114,18 +115,19 @@ function updateFileList(value) {
     </AForm>
   </section>
   <section>
-    <div class="flex flex-column">
+    <ASpace direction="vertical">
+      <Select />
       <Uploader
-        :isUploaderDisable="isUploaderDisable"
         :fileList="fileList"
+        :isUploaderDisable="isUploaderDisable"
         :isWorksheetComplete="isWorksheetComplete"
         @updateFileList="updateFileList"
       />
-    </div>
+      <AButton @click="isWorksheetComplete = !isWorksheetComplete"
+        >已覆核完成</AButton
+      >
+    </ASpace>
   </section>
-  <AButton @click="isWorksheetComplete = !isWorksheetComplete"
-    >已覆核完成</AButton
-  >
 </template>
 
 <style scoped></style>

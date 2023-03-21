@@ -22,17 +22,9 @@ const props = defineProps({
 const fileList = ref(props.fileList);
 
 // Eslint required
-// const emit = defineEmits({
-//     updateFileList: fileList => {
-//       if (fileList.length >= 2) {
-//         return true;
-//       } else {
-//         return false;
-//       }
-//     }
-// });
-
-const emit = defineEmits(['updateFileList']);
+const emit = defineEmits({
+  updateFileList: () => true
+});
 
 // disable after worksheet was checked.
 const isDisable = computed(() => {
@@ -146,7 +138,6 @@ function beforeUpload(file) {
       capture
       :beforeUpload="beforeUpload"
       @change="handleChange"
-      :disabled="isDisable"
     >
       <AButton :disabled="isDisable || isButtonDisable">
         <UploadOutlined></UploadOutlined>
