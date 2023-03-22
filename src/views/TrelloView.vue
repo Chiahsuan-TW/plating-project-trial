@@ -131,16 +131,23 @@ function saveLocal() {
 function putAPI() {
   console.log('put api');
 }
+
+function test() {
+  console.log('test');
+}
 </script>
 
 <template>
-  <div class="about">
+  <div class="about overflow-x-scroll">
     <h1>This is an Trello page</h1>
     <Draggable
       class="flex flex-row"
+      ghostClass="ghost-column"
       v-model="list1"
       itemKey="id"
       @end="saveLocal"
+      :scrollSensitivity="10"
+      :forceFallback="true"
     >
       <template #item="{ element }">
         <div class="p-2 m-2">
@@ -154,6 +161,11 @@ function putAPI() {
             :group="{ name: 'people', pull: pullFunction }"
             @start="start"
             @end="putAPI"
+            @change="test"
+            :scrollSensitivity="10"
+            :forceFallback="true"
+            :sort="false"
+            ghostClass="ghost"
           >
             <template #item="{ element }">
               <p class="p-2 my-2 cursor-pointer bg-sky-100">
@@ -167,4 +179,15 @@ function putAPI() {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.ghost {
+  border: 1px dashed black;
+  background-color: gray;
+}
+
+.ghost-column {
+  border: 1px dashed black;
+  background-color: gray;
+  height: fit-content;
+}
+</style>
