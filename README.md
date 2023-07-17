@@ -19,7 +19,8 @@ npm install
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+1. json-server --watch db.json
+2. npm run dev
 ```
 
 ### Compile and Minify for Production
